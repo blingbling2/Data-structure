@@ -1,0 +1,85 @@
+typedef struct Node
+{
+	int data;
+	struct Node *next;
+ } Node;
+typedef struct Node *LinkList;/*定义LinkList*/
+
+/*读取*/ 
+int GetElem(LinkList L,int i,int *e)/*用 e 返回 L 中第 i 个数据元素的值*/ 
+{
+	int j;
+	LinkList p;
+	p = L->next;	/*让 p 指向链表第一个结点*/ 
+	j = 1;	/*用 j 充当计数器*/ 
+	while  (p && j<i)
+	{
+		p = p->next;
+		j++;
+	}
+	if(!p || j>i)
+		return 0;	/*第 i 个元素不存在*/ 
+	*e = p->data;	/*取第 i 个元素的数据*/ 
+	return 1;
+}
+
+/*插入元素*/
+int ListInsert(LinkList *L,int i,int e)/*在 L 中第 i 个位置之前插入新的数据元素e，L长度加1*/ 
+{
+	int j;
+	LinkList p,s;
+	p = *L;
+	j = 1;
+	while  (p && j<i)
+	{
+		p = p->next;
+		j++;
+	}
+	if(!p || j>i)
+		return 0;	/*第 i 个元素不存在*/ 
+	s = (LinkList) malloc(sizeof(Node));	/*用malloc生成新结点*/ 
+	s->data = e;
+	s->next = p->next;	/*将 s 结点插入*/ 
+	p->next = s;
+	return 1;
+} 
+
+/*删除元素*/ 
+int ListDelete(LinkList *L,int i,int *e)/*删除L的第 i 个数据元素，并用e返回其值*/ 
+{
+	int j;
+	LinkList p,q;
+	p = *L;
+	j = 1;
+	while  (p->next && j<i) 	/*遍历寻找第 i 个元素*/ 
+	{
+		p p->next;
+		j++;
+	}
+	if (!(p->next) || j>i) 	/*第 i 个元素不存在*/ 
+		return 0;
+	q = p->next;
+	p->next = q->next;
+	*e = q->data;
+	free(q);
+	return 1;
+}
+
+/*创建链表*/
+void CreateListTail(LinkList *L,int n)
+{
+	LinkList p,r;
+	int i;
+	srand(time(0));
+	*L = (LinkList)malloc(sizeof(Node));/*为整个线性表*/
+	r = *L;	/*r指向尾部的结点*/
+	for(i=0;i<n;i++)
+	{
+		p = (Node *)malloc(sizeof(Node));/*生成新结点*/ 
+		p->data = rand()%100+1;
+		r->next = p;
+		r = p;
+	} 
+	r->next = NULL;
+}
+
